@@ -2,5 +2,5 @@
 // วาง URL ของ Web App ที่ได้จากการ Deploy Google Apps Script (ลงท้ายด้วย /exec)
 // ถ้าเว้นว่างไว้ หน้าเว็บจะบันทึกข้อมูลไว้ในเบราว์เซอร์ของเครื่องที่เปิดเท่านั้น
 window.CHECKIN_CONFIG = {
-  API_URL: ""
+  API_URL: "https://script.google.com/macros/s/AKfycbwrVABXmmIN-NTNZBLVihi0YUKJ01jCqUFeo6ivojp73NWaqmveFj1WRXu08bqhR7wgNA/exec"
 };
