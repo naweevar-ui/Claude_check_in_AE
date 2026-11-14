@@ -1,6 +1,6 @@
 /**
  * ระบบเช็คชื่อเข้าอบรม — ฝั่ง Google Sheet (Google Apps Script)
- * เวอร์ชัน 1.7.0 (14/11/2026)
+ * เวอร์ชัน 1.7.1 (14/11/2026)
  *
  * วิธีใช้โดยย่อ (รายละเอียดอยู่ใน README.md)
  * 1. เปิด Google Sheet > ส่วนขยาย > Apps Script แล้ววางโค้ดนี้แทนของเดิม
@@ -14,7 +14,8 @@ const TZ = 'Asia/Bangkok';
 const SH_PEOPLE = 'รายชื่อ';
 const SH_LOG = 'บันทึกเช็คชื่อ';
 const SH_SET = 'ตั้งค่า';
-const VERSION = '1.7.0';
+const VERSION = '1.7.1';
+const SH_DATA = 'Data';   // แท็บสรุปแบบง่าย: timestamp | name | note (มา / สาย)
 const PEOPLE_HEAD = ['รหัส', 'ชื่อ-นามสกุล', 'บริษัท', 'โทร', 'อีเมล', 'LINE', 'ติดต่อผ่าน'];
 const LOG_HEAD = ['วันที่', 'รหัส', 'ชื่อ-นามสกุล', 'เวลาเข้า', 'สถานะ', 'สาย (นาที)',
   'วิธียืนยัน', 'ลิงก์ลายเซ็น/รูป', 'ตัวอย่างภาพ', 'บันทึกเมื่อ', 'timestamp'];
@@ -108,6 +109,11 @@ function checkin_(b) {
     "'" + Utilities.formatDate(now, TZ, 'yyyy-MM-dd HH:mm:ss'), at
   ]);
   if (thumb) log.setRowHeight(log.getLastRow(), 60);
+  // บันทึกสรุปลงแท็บ Data ด้วย (ถ้ามีแท็บนี้ในชีต)
+  const data = SpreadsheetApp.getActive().getSheetByName(SH_DATA);
+  if (data) {
+    data.appendRow(["'" + Utilities.formatDate(now, TZ, 'dd/MM/yyyy HH:mm'), person.name, late > 0 ? 'สาย' : 'มา']);
+  }
   return { ok: true, check: { pid: person.id, at: at, kind: kind, img: thumb } };
 }
 
